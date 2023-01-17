@@ -1,4 +1,6 @@
 const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
@@ -6,8 +8,6 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
-
-const app = express();
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -53,4 +53,20 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("AI server started on http://localhost:5000"));
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+
+const port = normalizePort(process.env.PORT || "3002");
+
+server.listen(port, () => {
+  console.log("Listening on " + port);
+});
