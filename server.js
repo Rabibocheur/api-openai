@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
@@ -22,7 +23,30 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post("/", async (req, res) => {
+app.post("/image", async (req, res) => {
+  try {
+    const prompt = req.body.prompt;
+
+    console.log(prompt);
+
+    const response = await openai.createImage({
+      prompt,
+      n: req.body.number,
+      size: "256x256",
+      // size: "1024x1024",
+      // response_format: "b64_json",
+    });
+
+    console.log(response.data);
+
+    res.status(200).json({ images: response.data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error || "Something went wrong");
+  }
+});
+
+app.post("/chat", async (req, res) => {
   try {
     const prompt = req.body.prompt;
 
