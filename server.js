@@ -1,11 +1,10 @@
-const { response } = require("express");
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "",
 });
 
 const openai = new OpenAIApi(configuration);
